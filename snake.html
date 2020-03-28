@@ -1,8 +1,77 @@
 <html lang="en">
     <head>
+        <meta charset="utf-8" />
         <script src="snake.js"></script>
     </head>
     <body>
-        <canvas id="platno"></canvas>
+        <div class="parent-wrapper">
+            <div class="parent">
+                <div>
+                    <canvas id="platno" width="400" height="300"></canvas>
+                </div>
+                <div>
+                    <div class="buttons-wrapper">
+                        <button>New Game</button>
+                        <button>Pause</button>
+                        <button>Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
+
+<style>
+    * {
+        font-family: sans-serif;
+    }
+
+    canvas {
+        border: 2px solid #ccc;
+    }
+
+    button {
+        font-size: 16px;
+        position: relative;
+        min-width: 100px;
+        padding: 0.5em 1em;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        margin: 4px;
+        transition: background-color ease-out 0.1s;
+    }
+
+    button:hover {
+        background-color: #ddd;
+    }
+
+    button:active {
+        top: 1;
+        background-color: #ccc;
+        transition: background-color 0s;
+    }
+
+    .parent-wrapper {
+        display: inline-block;
+        margin: 0 auto;
+    }
+
+    .parent {
+        background: linear-gradient(45deg, #bfd, #bdf);
+        display: flex;
+        flex-direction: row;
+    }
+
+    .parent > div {
+        display: flex;
+        align-items: stretch;
+        padding: 10px;
+    }
+
+    .buttons-wrapper {
+        border: 2px solid #ccc;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
