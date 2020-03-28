@@ -1,9 +1,9 @@
 // window.onload = init
 window.addEventListener('load', init)
 
-let game = null;
+let game = null
 
-function init () {
+function init() {
     // console.log('init()')
     game = new SnakeGame('platno')
 }
@@ -12,7 +12,7 @@ class SnakeGame {
     constructor(id) {
         this.ctx = document.getElementById(id).getContext('2d')
         this.isRunning = false
-        this.lastTime = 0;
+        this.lastTime = 0
         this.framePeriod = 1 / 60
     }
 

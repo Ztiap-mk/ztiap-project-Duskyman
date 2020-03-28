@@ -1,0 +1,22 @@
+{
+  "name": "ztiap-project-duskyman",
+  "version": "1.0.0",
+  "description": "",
+  "main": "snake.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ztiap-mk/ztiap-project-Duskyman.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ztiap-mk/ztiap-project-Duskyman/issues"
+  },
+  "homepage": "https://github.com/Ztiap-mk/ztiap-project-Duskyman#readme",
+  "dependencies": {
+    "prettier": "^2.0.2"
+  }
+}
