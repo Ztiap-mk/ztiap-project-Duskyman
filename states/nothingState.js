@@ -6,9 +6,23 @@ class NothingState {
             size: { x: 20, y: 20 },
             position: { x: 50, y: 50 },
         })
-        this.star = new UselessRotatingStar({
-            position: { x: 100, y: 50 },
-        })
+        this.stars = [
+            new UselessRotatingStar({
+                position: { x: 100, y: 30 },
+            }),
+            new UselessRotatingStar({
+                position: { x: 70, y: 200 },
+            }),
+            new UselessRotatingStar({
+                position: { x: 350, y: 250 },
+            }),
+            new UselessRotatingStar({
+                position: { x: 320, y: 80 },
+            }),
+            new UselessRotatingStar({
+                position: { x: 150, y: 260 },
+            }),
+        ]
     }
     init(globals) {
         globals.buttons.newGame.disabled = false
@@ -17,7 +31,7 @@ class NothingState {
     }
     update(dt, globals) {
         while (globals.events.length) {
-            const [event] = globals.events.splice(0,1)
+            const [event] = globals.events.splice(0, 1)
             if (event.type === 'click' && event.id === 'newGameBut') {
                 globals.changeState(STATES.GAME_STARTING)
             }
@@ -25,7 +39,7 @@ class NothingState {
 
         this.animation = (dt / 3000 + this.animation) % 1
         this.entity.rotation = this.animation * Math.PI * 2
-        this.star.update(dt)
+        this.stars.forEach((star) => star.update(dt))
     }
     render(dt, globals) {
         globals.ctx.save()
@@ -41,7 +55,7 @@ class NothingState {
         globals.ctx.fillText(this.text, 0, 0)
         globals.ctx.restore()
         this.entity.draw(globals.ctx)
-        this.star.draw(globals.ctx)
+        this.stars.forEach((star) => star.draw(globals.ctx))
     }
     dispose() {}
 }

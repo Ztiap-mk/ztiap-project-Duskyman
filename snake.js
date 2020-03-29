@@ -29,6 +29,7 @@ class SnakeGame {
             pause: document.getElementById('pauseBut'),
             reset: document.getElementById('resetBut'),
         }
+        this.assets = {}
         this.globals = {
             gameData: {},
             canvas: this.canvas,
@@ -36,10 +37,15 @@ class SnakeGame {
             events: this.events,
             buttons: this.buttons,
             changeState: (state) => this.changeState(state),
+            assets: this.assets,
         }
         this.setup()
         this.state = STATES.NOTHING
         this.state.init(this.globals)
+    }
+
+    loadAssets(files) {
+        files.forEach((file) => {})
     }
 
     start() {
