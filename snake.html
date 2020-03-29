@@ -1,8 +1,11 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <script src="entity.js"></script>
+        <script src="entities/entity.js"></script>
+        <script src="entities/uselessRotatingStar.js"></script>
+        <script src="states/state.js"></script>
         <script src="states/nothingState.js"></script>
+        <script src="states/gameStartingState.js"></script>
         <script src="snake.js"></script>
     </head>
     <body>
@@ -41,7 +44,7 @@
         background-color: #f0f0f080;
         border: 1px solid #ccc;
         margin: 4px;
-        transition: background-color ease-out 0.1s;
+        transition: background-color ease-out 0.2s;
     }
 
     button:hover {

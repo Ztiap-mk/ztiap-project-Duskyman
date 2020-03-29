@@ -10,30 +10,9 @@ function init() {
 
 const STATES = {
     NOTHING: new NothingState(),
-    GAME_STARTING: {
-        data: {},
-        init: () => {},
-        update: () => {},
-        render: () => {},
-        input: (events) => {},
-        dispose: () => {},
-    },
-    GAME_PLAY: {
-        data: {},
-        init: () => {},
-        update: () => {},
-        render: () => {},
-        input: (events) => {},
-        dispose: () => {},
-    },
-    GAME_OVER: {
-        data: {},
-        init: () => {},
-        update: () => {},
-        render: () => {},
-        input: (events) => {},
-        dispose: () => {},
-    },
+    GAME_STARTING: new GameStartingState(),
+    GAME_PLAY: new State(),
+    GAME_OVER: new State(),
 }
 
 class SnakeGame {
@@ -51,6 +30,7 @@ class SnakeGame {
             reset: document.getElementById('resetBut'),
         }
         this.globals = {
+            gameData: {},
             canvas: this.canvas,
             ctx: this.ctx,
             events: this.events,
@@ -108,7 +88,7 @@ class SnakeGame {
         this.events.push(reducedEvent)
     }
     update(dt) {
-        this.state.update(dt)
+        this.state.update(dt, this.globals)
     }
     render(dt) {
         const { ctx, canvas } = this

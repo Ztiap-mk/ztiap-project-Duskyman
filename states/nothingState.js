@@ -6,17 +6,28 @@ class NothingState {
             size: { x: 20, y: 20 },
             position: { x: 50, y: 50 },
         })
+        this.star = new UselessRotatingStar({
+            position: { x: 100, y: 50 },
+        })
     }
     init(globals) {
+        globals.buttons.newGame.disabled = false
         globals.buttons.pause.disabled = true
         globals.buttons.reset.disabled = true
     }
-    update(dt) {
+    update(dt, globals) {
+        while (globals.events.length) {
+            const [event] = globals.events.splice(0,1)
+            if (event.type === 'click' && event.id === 'newGameBut') {
+                globals.changeState(STATES.GAME_STARTING)
+            }
+        }
+
         this.animation = (dt / 3000 + this.animation) % 1
         this.entity.rotation = this.animation * Math.PI * 2
+        this.star.update(dt)
     }
     render(dt, globals) {
-        // globals.ctx.save()
         globals.ctx.save()
         globals.ctx.textAlign = 'center'
         globals.ctx.textBaseline = 'middle'
@@ -30,7 +41,7 @@ class NothingState {
         globals.ctx.fillText(this.text, 0, 0)
         globals.ctx.restore()
         this.entity.draw(globals.ctx)
+        this.star.draw(globals.ctx)
     }
-    input(events) {}
     dispose() {}
 }

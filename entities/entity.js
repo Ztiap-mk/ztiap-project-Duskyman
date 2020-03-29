@@ -26,6 +26,7 @@ class Entity {
     update() {}
     draw(ctx) {
         ctx.save()
+        ctx.fillStyle = this.backgroundColor
         ctx.translate(this.position.x, this.position.y)
         ctx.rotate(this.rotation)
         ctx.scale(this.scale.x, this.scale.y)
