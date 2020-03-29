@@ -4,67 +4,8 @@ window.addEventListener('load', init)
 let game = null
 
 function init() {
-    // console.log('init()')
     game = new SnakeGame('platno')
     game.start()
-}
-
-class Entity {
-    constructor(options) {
-        this.position = {
-            x: 0,
-            y: 0,
-        }
-        this.scale = {
-            x: 1,
-            y: 1,
-        }
-        this.size = {
-            x: 0,
-            y: 0,
-        }
-        this.rotation = 0
-        this.image = null
-        this.backgroundColor = "#000"
-    }
-    draw(ctx) {
-        ctx.save()
-        ctx.translate(this.position.x, this.position.y)
-        ctx.rotate(this.rotation)
-        ctx.scale(this.scale.x, this.scale.y)
-        ctx.fillRect(-(this.size.x / 2), -(this.size.y/2), this.size.x, this.size.y)
-        ctx.restore()
-    }
-}
-
-class NothingState {
-    constructor() {
-        this.text = 'Super Snake 4001'
-        this.entity = new Entity()
-        this.entity.size = {x: 50, y: 50}
-        this.entity.position = {x: 50, y: 50}
-        this.animation = 0
-    }
-    init() {}
-    update (dt) {
-        this.animation = (dt / 3000 + this.animation) % 1
-        this.entity.rotation = this.animation * Math.PI * 2
-    }
-    render (dt, globals) {
-        // globals.ctx.save()
-        globals.ctx.save()
-        globals.ctx.textAlign = 'center'
-        globals.ctx.textBaseline = 'middle'
-        globals.ctx.font = '25px serif'
-        globals.ctx.translate(globals.canvas.width / 2, globals.canvas.height / 2)
-        globals.ctx.rotate((this.animation) * 2*Math.PI * (-1))
-        globals.ctx.scale(1 + Math.sin((this.animation)*Math.PI*2) / 4  , 1 + Math.sin((this.animation)*Math.PI*2) / 4)
-        globals.ctx.fillText(this.text, 0, 0)
-        globals.ctx.restore()
-        this.entity.draw(globals.ctx)
-    }
-    input (events) {}
-    dispose() {}
 }
 
 const STATES = {
@@ -102,16 +43,23 @@ class SnakeGame {
         this.isRunning = false
         this.lastTick = 0
         this.framePeriod = 1000 / 60
-        this.setup()
-        this.state = STATES.NOTHING
         this.events = []
         this.nextState = null
+        this.buttons = {
+            newGame: document.getElementById('newGameBut'),
+            pause: document.getElementById('pauseBut'),
+            reset: document.getElementById('resetBut'),
+        }
         this.globals = {
             canvas: this.canvas,
             ctx: this.ctx,
             events: this.events,
-            changeState: (state) => this.changeState(state)
+            buttons: this.buttons,
+            changeState: (state) => this.changeState(state),
         }
+        this.setup()
+        this.state = STATES.NOTHING
+        this.state.init(this.globals)
     }
 
     start() {
@@ -127,15 +75,19 @@ class SnakeGame {
     setup() {
         window.addEventListener('keydown', (e) => this.input(e))
         window.addEventListener('keyup', (e) => this.input(e))
+        Object.entries(this.buttons).forEach(([key, value]) =>
+            value.addEventListener('click', (e) => this.input(e))
+        )
     }
 
     tick(time) {
         const dt = time - this.lastTick
         if (dt >= this.framePeriod) {
             if (this.nextState) {
-                this.state.dispose()
+                this.state.dispose(this.globals)
                 this.state = this.nextState
                 this.nextState = null
+                this.state.init(this.globals)
             }
             this.lastTick = time
             this.update(dt)
@@ -144,7 +96,16 @@ class SnakeGame {
         requestAnimationFrame((time) => this.tick(time))
     }
     input(e) {
-        this.events.push({ type: e.type, keyCode: e.keyCode })
+        console.log(e)
+        let reducedEvent
+        if (['keydown', 'keyup'].includes(e.type)) {
+            reducedEvent = { type: e.type, keyCode: e.keyCode }
+        }
+        if (['mouseup', 'mousedown', 'click'].includes(e.type)) {
+            reducedEvent = { type: e.type, id: e.target.id }
+        }
+        console.log(reducedEvent)
+        this.events.push(reducedEvent)
     }
     update(dt) {
         this.state.update(dt)
@@ -160,4 +121,3 @@ class SnakeGame {
         this.nextState = state
     }
 }
-

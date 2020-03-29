@@ -1,6 +1,8 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <script src="entity.js"></script>
+        <script src="states/nothingState.js"></script>
         <script src="snake.js"></script>
     </head>
     <body>
@@ -11,9 +13,9 @@
                 </div>
                 <div>
                     <div class="buttons-wrapper">
-                        <button>New Game</button>
-                        <button>Pause</button>
-                        <button>Reset</button>
+                        <button id="newGameBut">New Game</button>
+                        <button id="pauseBut">Pause</button>
+                        <button id="resetBut">Reset</button>
                     </div>
                 </div>
             </div>
@@ -36,20 +38,25 @@
         min-width: 100px;
         padding: 0.5em 1em;
         border-radius: 5px;
-        background-color: #f0f0f0;
+        background-color: #f0f0f080;
         border: 1px solid #ccc;
         margin: 4px;
         transition: background-color ease-out 0.1s;
     }
 
     button:hover {
-        background-color: #ddd;
+        background-color: #ddddddc0;
     }
 
     button:active {
         top: 1;
-        background-color: #ccc;
+        background-color: #ccccccc0;
         transition: background-color 0s;
+    }
+
+    button:disabled {
+        background-color: #f0f0f040;
+        border-color: #f0f0f040;
     }
 
     .parent-wrapper {
