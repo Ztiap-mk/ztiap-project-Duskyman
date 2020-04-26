@@ -16,12 +16,11 @@ class Entity {
         this.image = null
         this.backgroundColor = '#000'
 
-        // note: potentionally buggy - shallow copying!
+        // NOTE: potentially buggy - shallow copying!
         Object.entries(options).forEach(([key, value]) => {
             // console.log(key, value)
             this[key] = value
         })
-        // console.log(this, Object.entries(options))
     }
     update() {}
     draw(ctx) {
@@ -31,6 +30,9 @@ class Entity {
         ctx.rotate(this.rotation)
         ctx.scale(this.scale.x, this.scale.y)
         ctx.fillRect(-(this.size.x / 2), -(this.size.y / 2), this.size.x, this.size.y)
+        if (this.image) {
+            ctx.drawImage(this.image, -(this.size.x / 2), -(this.size.y / 2), this.size.x, this.size.y)
+        }
         ctx.restore()
     }
 }

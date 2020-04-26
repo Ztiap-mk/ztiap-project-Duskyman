@@ -6,6 +6,13 @@ class NothingState {
             size: { x: 20, y: 20 },
             position: { x: 50, y: 50 },
         })
+        this.animatedEntity = new AnimatedEntity({
+            size: { x: 20, y: 20 },
+            position: { x: 100, y: 50 },
+            animationSize: {x: 3, y: 3},
+            animationFramesCount: 6,
+            backgroundColor: 'pink',
+        })
         this.stars = [
             new UselessRotatingStar({
                 position: { x: 100, y: 30 },
@@ -28,6 +35,8 @@ class NothingState {
         globals.buttons.newGame.disabled = false
         globals.buttons.pause.disabled = true
         globals.buttons.reset.disabled = true
+
+        this.animatedEntity.animationSource = globals.assets.images.example
     }
     update(dt, globals) {
         while (globals.events.length) {
@@ -39,6 +48,7 @@ class NothingState {
 
         this.animation = (dt / 3000 + this.animation) % 1
         this.entity.rotation = this.animation * Math.PI * 2
+        this.animatedEntity.update(dt)
         this.stars.forEach((star) => star.update(dt))
     }
     render(dt, globals) {
@@ -55,6 +65,7 @@ class NothingState {
         globals.ctx.fillText(this.text, 0, 0)
         globals.ctx.restore()
         this.entity.draw(globals.ctx)
+        this.animatedEntity.draw(globals.ctx)
         this.stars.forEach((star) => star.draw(globals.ctx))
     }
     dispose() {}

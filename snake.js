@@ -5,7 +5,9 @@ let game = null
 
 function init() {
     game = new SnakeGame('platno')
-    game.start()
+    game.onReady(() => {
+        game.start()
+    })
 }
 
 const STATES = {
@@ -17,8 +19,55 @@ const STATES = {
 
 class SnakeGame {
     constructor(id) {
+        this.setup(id)
+    }
+
+    async loadAssets() {
+        console.log('Loading assets')
+        // alert(JSON.stringify(ASSETS_JSON))
+        const images = Object.entries(ASSETS_JSON.images)
+            .map(([key, name]) => {
+                const image = new Image()
+                image.src = `assets/images/${name}`
+                console.log(`\tloading resource ${key} ("${name}")`)
+                const promise = new Promise((resolve) => {
+                    image.onload = () => {
+                        setTimeout(() => {
+                            console.log(`\t\tresource ${key} ("${name}") loaded`)
+                            resolve()
+                        }, Math.floor(Math.random() * 11) * 200 + 500)
+                    }
+                })
+                return {key, image, promise}
+            })
+
+        await Promise.all(images.map(({promise}) => promise))
+
+        const result = {images: images.reduce((result,{key,image}) => ({...result, [key]: image}),{})}
+        console.log(result)
+        return result
+    }
+
+    onReady(cb) {
+        this.onReadyFn = cb
+    }
+
+    start() {
+        console.log('starting')
+        console.log(this)
+        this.isRunning = true
+        this.lastTick = 0
+        requestAnimationFrame((time) => this.tick(time))
+    }
+
+    stop() {
+        this.isRunning = false
+    }
+
+    async setup(id) {
         this.canvas = document.getElementById(id)
         this.ctx = this.canvas.getContext('2d')
+        this.ctx.imageSmoothingEnabled = false // prevent aliasing of neighbouring images in animation sheets
         this.isRunning = false
         this.lastTick = 0
         this.framePeriod = 1000 / 60
@@ -29,7 +78,7 @@ class SnakeGame {
             pause: document.getElementById('pauseBut'),
             reset: document.getElementById('resetBut'),
         }
-        this.assets = {}
+
         this.globals = {
             gameData: {},
             canvas: this.canvas,
@@ -37,38 +86,24 @@ class SnakeGame {
             events: this.events,
             buttons: this.buttons,
             changeState: (state) => this.changeState(state),
-            assets: this.assets,
+            assets: await this.loadAssets(),
         }
-        this.setup()
-        this.state = STATES.NOTHING
-        this.state.init(this.globals)
-    }
 
-    loadAssets(files) {
-        files.forEach((file) => {})
-    }
-
-    start() {
-        this.isRunning = true
-        this.lastTick = 0
-        requestAnimationFrame((time) => this.tick(time))
-    }
-
-    stop() {
-        this.isRunning = false
-    }
-
-    setup() {
         window.addEventListener('keydown', (e) => this.input(e))
         window.addEventListener('keyup', (e) => this.input(e))
         Object.entries(this.buttons).forEach(([key, value]) =>
             value.addEventListener('click', (e) => this.input(e))
         )
-    }
 
+        this.state = STATES.NOTHING
+        this.state.init(this.globals)
+        this.onReadyFn && this.onReadyFn()
+    }
+    // fixed timestep
     tick(time) {
-        const dt = time - this.lastTick
+        const dt = time - this.lastTick // how much time passed from last render
         if (dt >= this.framePeriod) {
+            // check if we should change state
             if (this.nextState) {
                 this.state.dispose(this.globals)
                 this.state = this.nextState
@@ -79,10 +114,9 @@ class SnakeGame {
             this.update(dt)
             this.render(dt)
         }
-        requestAnimationFrame((time) => this.tick(time))
+        requestAnimationFrame((time) => this.tick(time)) // requestAnimationFrame returns time passed since the start of session
     }
     input(e) {
-        console.log(e)
         let reducedEvent
         if (['keydown', 'keyup'].includes(e.type)) {
             reducedEvent = { type: e.type, keyCode: e.keyCode }
@@ -90,7 +124,6 @@ class SnakeGame {
         if (['mouseup', 'mousedown', 'click'].includes(e.type)) {
             reducedEvent = { type: e.type, id: e.target.id }
         }
-        console.log(reducedEvent)
         this.events.push(reducedEvent)
     }
     update(dt) {
