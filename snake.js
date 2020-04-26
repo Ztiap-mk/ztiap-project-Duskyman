@@ -32,10 +32,8 @@ class SnakeGame {
                 console.log(`\tloading resource ${key} ("${name}")`)
                 const promise = new Promise((resolve) => {
                     image.onload = () => {
-                        setTimeout(() => {
-                            console.log(`\t\tresource ${key} ("${name}") loaded`)
-                            resolve()
-                        }, Math.floor(Math.random() * 11) * 200 + 500)
+                        console.log(`\t\tresource ${key} ("${name}") loaded`)
+                        resolve()
                     }
                 })
                 return {key, image, promise}
@@ -44,7 +42,6 @@ class SnakeGame {
         await Promise.all(images.map(({promise}) => promise))
 
         const result = {images: images.reduce((result,{key,image}) => ({...result, [key]: image}),{})}
-        console.log(result)
         return result
     }
 
@@ -53,8 +50,6 @@ class SnakeGame {
     }
 
     start() {
-        console.log('starting')
-        console.log(this)
         this.isRunning = true
         this.lastTick = 0
         requestAnimationFrame((time) => this.tick(time))
