@@ -106,8 +106,10 @@ class SnakeGame {
                 this.state.init(this.globals)
             }
             this.lastTick = time
-            this.update(dt)
-            this.render(dt)
+            const skipRender = this.update(dt)
+            if (!skipRender) {
+                this.render(dt)
+            }
         }
         requestAnimationFrame((time) => this.tick(time)) // requestAnimationFrame returns time passed since the start of session
     }

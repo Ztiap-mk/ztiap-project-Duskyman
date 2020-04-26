@@ -26,12 +26,12 @@ class GameStartingState extends State {
         if (this.animation >= 1) {
             this.animation -= 1
             this.countdownValue -= 1
-            if (this.countdownValue) {
+            if (this.countdownValue > 0) {
                 this.countdown.text = String(this.countdownValue)
             } else {
                 globals.changeState(STATES.GAME_PLAY)
+                return true
             }
-
         }
 
         this.countdown.scale = {x: 1 + (1 - this.animation)*5, y: 1 + (1 - this.animation)*5}
