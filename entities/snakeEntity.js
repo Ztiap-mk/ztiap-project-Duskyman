@@ -1,12 +1,15 @@
 class SnakeEntity extends Entity {
     constructor() {
-        this.direction = 'right'
-        this.walkInterval = 1000
-        this.walkTime = 0
-        this.parts = [
-            { direction: 'right', position: { x: 10, y: 5 } },
-            { direction: 'right', position: { x: 10, y: 5 } },
-        ]
+        const defaults = {
+            direction: 'right',
+            walkInterval: 1000,
+            walkTime: 0,
+            parts: [
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+            ]
+        }
+        super(defaults)
     }
 
     moveSnake() {

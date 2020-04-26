@@ -1,24 +1,25 @@
 class Entity {
     constructor(options) {
-        this.position = {
-            x: 0,
-            y: 0,
+        const defaults = {
+            position: {
+                x: 0,
+                y: 0,
+            },
+            scale: {
+                x: 1,
+                y: 1,
+            },
+            size: {
+                x: 0,
+                y: 0,
+            },
+            rotation: 0,
+            image: null,
+            backgroundColor: '#000'
         }
-        this.scale = {
-            x: 1,
-            y: 1,
-        }
-        this.size = {
-            x: 0,
-            y: 0,
-        }
-        this.rotation = 0
-        this.image = null
-        this.backgroundColor = '#000'
 
         // NOTE: potentially buggy - shallow copying!
-        Object.entries(options).forEach(([key, value]) => {
-            // console.log(key, value)
+        Object.entries({...defaults, ...options}).forEach(([key, value]) => {
             this[key] = value
         })
     }

@@ -13,12 +13,8 @@ class GameStartingState extends State {
         buttons.pause.disabled = false
         buttons.reset.disabled = false
 
-        gameData.snake = {
-            parts: [
-                { direction: 'right', position: { x: 10, y: 5 } },
-                { direction: 'right', position: { x: 10, y: 5 } },
-            ],
-        }
+        gameData.snake = new SnakeEntity()
+
         this.countdownValue = 3
         this.animation = 0
         this.countdown.text = String(this.countdownValue)
@@ -30,8 +26,12 @@ class GameStartingState extends State {
         if (this.animation >= 1) {
             this.animation -= 1
             this.countdownValue -= 1
-            if (this.countdownValue)
-            this.countdown.text = String(this.countdownValue)
+            if (this.countdownValue) {
+                this.countdown.text = String(this.countdownValue)
+            } else {
+                globals.changeState(STATES.GAME_PLAY)
+            }
+
         }
 
         this.countdown.scale = {x: 1 + (1 - this.animation)*5, y: 1 + (1 - this.animation)*5}
@@ -43,7 +43,6 @@ class GameStartingState extends State {
             }
         }
     }
-
     render(dt, { ctx }) {
         drawBackground(ctx)
         this.countdown.draw(ctx)
