@@ -51,22 +51,22 @@ class NothingState {
         this.animatedEntity.update(dt)
         this.stars.forEach((star) => star.update(dt))
     }
-    render(dt, globals) {
-        globals.ctx.save()
-        globals.ctx.textAlign = 'center'
-        globals.ctx.textBaseline = 'middle'
-        globals.ctx.font = '25px serif'
-        globals.ctx.translate(globals.canvas.width / 2, globals.canvas.height / 2)
-        globals.ctx.rotate(this.animation * 2 * Math.PI * -1)
-        globals.ctx.scale(
+    render(dt, {ctx, canvas}) {
+        ctx.save()
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.font = '25px serif'
+        ctx.translate(canvas.width / 2, canvas.height / 2)
+        ctx.rotate(this.animation * 2 * Math.PI * -1)
+        ctx.scale(
             1 + Math.sin(this.animation * Math.PI * 2) / 4,
             1 + Math.sin(this.animation * Math.PI * 2) / 4
         )
-        globals.ctx.fillText(this.text, 0, 0)
-        globals.ctx.restore()
-        this.entity.draw(globals.ctx)
-        this.animatedEntity.draw(globals.ctx)
-        this.stars.forEach((star) => star.draw(globals.ctx))
+        ctx.fillText(this.text, 0, 0)
+        ctx.restore()
+        this.entity.draw(ctx)
+        this.animatedEntity.draw(ctx)
+        this.stars.forEach((star) => star.draw(ctx))
     }
     dispose() {}
 }

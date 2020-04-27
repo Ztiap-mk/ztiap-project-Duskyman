@@ -1,3 +1,10 @@
+
+// minimal requirements:
+// - animationSource
+// - animationFramesCount
+// - position
+// - size
+
 class AnimatedEntity extends Entity {
     constructor(options) {
         const defaults = {
@@ -10,6 +17,8 @@ class AnimatedEntity extends Entity {
         animationSource: null
         }
         super({...defaults, ...options})
+        console.log('animated entity creation:')
+        console.log(this)
     }
     update(dt) {
         this.animationProgress += dt

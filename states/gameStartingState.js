@@ -8,12 +8,14 @@ class GameStartingState extends State {
         })
     }
 
-    init({ buttons, gameData, canvas }) {
+    init({ buttons, gameData, canvas, assets }) {
         buttons.newGame.disabled = true
         buttons.pause.disabled = false
         buttons.reset.disabled = false
 
-        gameData.snake = new SnakeEntity()
+        gameData.snake = new SnakeEntity({
+            animationSource: assets.images.example
+        })
 
         this.countdownValue = 3
         this.animation = 0

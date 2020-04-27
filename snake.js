@@ -13,7 +13,7 @@ function init() {
 const STATES = {
     NOTHING: new NothingState(),
     GAME_STARTING: new GameStartingState(),
-    GAME_PLAY: new State(),
+    GAME_PLAY: new GamePlayState(),
     GAME_OVER: new State(),
 }
 

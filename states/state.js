@@ -1,6 +1,7 @@
 class State {
-    init () {}
-    update () {}
-    render () {}
+    constructor(options) {}
+    init (globals) {}
+    update (dt, globals) {}
+    render (dt, globals) {}
     dispose () {}
 }
