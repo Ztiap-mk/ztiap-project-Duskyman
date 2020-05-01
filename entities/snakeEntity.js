@@ -14,10 +14,26 @@ class SnakeEntity extends Entity {
             parts: [
                 { direction: 'right', position: { x: 10, y: 5 } },
                 { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
+                { direction: 'right', position: { x: 10, y: 5 } },
             ]
         }
         super({...defaults, ...options})
-        this.parts = this.parts.map((part) => ({...part, entity: this.createNewPartEntity({position: part.position, direction: part.direction})}))
+        this.parts = this.parts.map(
+            (part, index) => ({
+                ...part,
+                entity: this.createNewPartEntity({
+                    position: part.position,
+                    direction: part.direction,
+                    index
+                })
+            }))
     }
 
     moveSnake(direction) {
@@ -53,12 +69,14 @@ class SnakeEntity extends Entity {
         }
     }
 
-    createNewPartEntity({position, direction}) {
+    createNewPartEntity({position, direction, index}) {
         const newPart = new AnimatedEntity({
             position: {x: position.x * 20, y: position.y * 20},
             animationPose: ANIMATION_POSES[direction],
             animationSource: this.animationSource,
-            animationFramesCount: 6,
+            animationSize: { x: 24, y: 24 },
+            animationFramesCount: 8,
+            animationIndex: index % 8,
             size: {x: 20, y: 20},
         })
         return newPart

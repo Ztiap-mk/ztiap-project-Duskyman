@@ -14,7 +14,7 @@ class GameStartingState extends State {
         buttons.reset.disabled = false
 
         gameData.snake = new SnakeEntity({
-            animationSource: assets.images.example
+            animationSource: assets.images.snake
         })
 
         this.countdownValue = 3

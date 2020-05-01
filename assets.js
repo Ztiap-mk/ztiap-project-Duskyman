@@ -1,5 +1,6 @@
 const ASSETS_JSON = {
   images: {
-    example: "animationExample.bmp"
+    example: "animationExample.bmp",
+    snake: "snake.bmp",
   }
 }
