@@ -22,18 +22,17 @@ class SnakeEntity extends Entity {
                 { direction: 'right', position: { x: 10, y: 5 } },
                 { direction: 'right', position: { x: 10, y: 5 } },
                 { direction: 'right', position: { x: 10, y: 5 } },
-            ]
+            ],
         }
-        super({...defaults, ...options})
-        this.parts = this.parts.map(
-            (part, index) => ({
-                ...part,
-                entity: this.createNewPartEntity({
-                    position: part.position,
-                    direction: part.direction,
-                    index
-                })
-            }))
+        super({ ...defaults, ...options })
+        this.parts = this.parts.map((part, index) => ({
+            ...part,
+            entity: this.createNewPartEntity({
+                position: part.position,
+                direction: part.direction,
+                index,
+            }),
+        }))
     }
 
     moveSnake(direction) {
@@ -41,43 +40,50 @@ class SnakeEntity extends Entity {
         const len = this.parts.length
 
         this.parts.forEach((part, index) => {
-            if (index < len - 1) {
-                const previousPart = this.parts[len - index - 2]
-                this.parts[len - index - 1].position = {...(previousPart.position)}
-                this.parts[len - index - 1].direction = {...(previousPart.direction)}
-                this.parts[len - index - 1].entity.animationPose = ANIMATION_POSES[previousPart.direction]
-                this.parts[len - index - 1].entity.position = {...previousPart.entity.position}
-
+            const i = len - 1 - index
+            if (i > 1) {
+                const previousPart = this.parts[i - 1]
+                this.parts[i].position = { ...previousPart.position }
+                this.parts[i].direction = { ...previousPart.direction }
+                this.parts[i].entity.animationPose = ANIMATION_POSES[previousPart.direction]
+                this.parts[i].entity.position = { ...previousPart.entity.position }
             } else {
                 if (direction) {
                     this.parts[0].direction = direction
                     this.parts[0].entity.animationPose = ANIMATION_POSES[direction]
                 }
                 this.parts[0].position = this.getNewPosition(this.parts[0])
-                this.parts[0].entity.position = {x: this.parts[0].position.x * 20, y: this.parts[0].position.y * 20}
+                this.parts[0].entity.position = {
+                    x: this.parts[0].position.x * 20,
+                    y: this.parts[0].position.y * 20,
+                }
             }
         })
     }
 
     getNewPosition(part) {
-        const {x,y} = part.position
-        switch(part.direction) {
-            case 'up': return {x, y: y - 1}
-            case 'down': return {x, y: y + 1}
-            case 'left': return {x: x - 1, y}
-            case 'right': return {x: x + 1, y}
+        const { x, y } = part.position
+        switch (part.direction) {
+            case 'up':
+                return { x, y: y - 1 }
+            case 'down':
+                return { x, y: y + 1 }
+            case 'left':
+                return { x: x - 1, y }
+            case 'right':
+                return { x: x + 1, y }
         }
     }
 
-    createNewPartEntity({position, direction, index}) {
+    createNewPartEntity({ position, direction, index }) {
         const newPart = new AnimatedEntity({
-            position: {x: position.x * 20, y: position.y * 20},
+            position: { x: position.x * 20, y: position.y * 20 },
             animationPose: ANIMATION_POSES[direction],
             animationSource: this.animationSource,
             animationSize: { x: 24, y: 24 },
             animationFramesCount: 8,
             animationIndex: index % 8,
-            size: {x: 20, y: 20},
+            size: { x: 20, y: 20 },
         })
         return newPart
     }
@@ -93,6 +99,6 @@ class SnakeEntity extends Entity {
 
     draw(ctx) {
         drawBackground(ctx)
-        this.parts.forEach(({entity}) => entity.draw(ctx))
+        this.parts.forEach(({ entity }) => entity.draw(ctx))
     }
 }
